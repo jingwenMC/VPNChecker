@@ -1,0 +1,7 @@
+name: VPNChecker
+version: @version@
+main: top.jingwenmc.vpnchecker.bungee.main
+depends:
+  - BukkitCord
+author: jingwenMC
+description: VPNChecker

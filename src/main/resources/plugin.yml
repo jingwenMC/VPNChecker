@@ -1,0 +1,8 @@
+name: VPNChecker
+version: @version@
+main: top.jingwenmc.vpnchecker.bukkit.main
+api-version: 1.16
+depend: [ BukkitCord ]
+authors: [ jingwenMC ]
+description: VPNChecker
+website: www.jingwenmc.top

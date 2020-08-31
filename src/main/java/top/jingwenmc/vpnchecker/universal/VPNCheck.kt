@@ -19,7 +19,7 @@ object VPNCheck {
             val isBad = ipType != IPType.GOOD
             println("[VPNChecker]从缓存中读取:")
             println("Request UUID:" + uuid.toString())
-            println("Cache Details: IsGood:$isBad using IP:$ip")
+            println("Cache Details: IsBad:$isBad using IP:$ip")
             if (isBad) {
                 map[IPType.BAD] = uuid
                 cache[ip] = IPType.BAD

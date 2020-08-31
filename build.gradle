@@ -1,7 +1,24 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
+buildscript {
+    ext.kotlin_version = '1.4.0'
+    repositories {
+        mavenLocal()
+        maven{ url 'https://maven.aliyun.com/nexus/content/groups/public/'}
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+}
 apply plugin: 'java'
 apply plugin: 'kotlin'
+
+defaultTasks 'clean', 'build', 'shadowJar'
 
 group = 'top.jingwenmc'
 version = '1.0-RELEASE'
@@ -31,9 +48,6 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'net.md-5:bungeecord-api:1.16-R0.3'
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compileOnly 'top.dsbbs2:bukkitcord:1.01-SNAPSHOT'
     compile 'com.alibaba:fastjson:1.2.73'
     compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
@@ -44,16 +58,13 @@ processResources {
         filter ReplaceTokens, tokens: [version: version]
     }
 }
-buildscript {
-    ext.kotlin_version = '1.4.0'
-    repositories {
-        mavenLocal()
-        maven{ url 'https://maven.aliyun.com/nexus/content/groups/public/'}
-        mavenCentral()
-    }
+
+
+shadowJar {
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        it.include it.dependency('com.alibaba:fastjson.*')
     }
+    relocate 'com.alibaba.fastjson', 'top.jingwenmc.fastjson'
 }
 
 compileKotlin {

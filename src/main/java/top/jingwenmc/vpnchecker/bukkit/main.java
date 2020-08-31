@@ -4,9 +4,11 @@ import cn.dreamlessrealm.dreamlessrealmban.utils.types.*;
 import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import top.dsbbs2.bukkitcord.api.PlatformManager;
 import top.dsbbs2.bukkitcord.bukkit.BukkitPluginImpl;
 import top.jingwenmc.vpnchecker.universal.IPType;
@@ -34,14 +36,21 @@ public final class main extends BukkitPluginImpl implements Listener {
     @EventHandler
     public void onConn(PlayerJoinEvent event)
     {
-        Map<IPType, UUID> map = VPNCheck.INSTANCE.checkIp(event.getPlayer().getAddress().getAddress().getHostAddress());
-        UUID uuid = Iterables.getOnlyElement(map.values());
-        if(map.containsKey(IPType.BAD))
+        Player player = event.getPlayer();
+        new BukkitRunnable()
         {
-            Bans.COMPROMISED_ACCOUNT.actionsForever(PlatformManager.INSTANCE.getPlatform().getConSoleSender()
-                    , new String[]{event.getPlayer().getName()});
-        }
-        if(map.containsKey(IPType.GOOD))return;
-        event.getPlayer().kickPlayer(ChatColor.RED+"发生错误,请反馈服务器管理员,错误编号:"+uuid.toString());
+            @Override
+            public void run() {
+                Map<IPType, UUID> map = VPNCheck.INSTANCE.checkIp(player.getAddress().getAddress().getHostAddress());
+                UUID uuid = Iterables.getOnlyElement(map.values());
+                if(map.containsKey(IPType.BAD))
+                {
+                    Bans.COMPROMISED_ACCOUNT.actionsForever(PlatformManager.INSTANCE.getPlatform().getConSoleSender()
+                            , new String[]{player.getName()});
+                }
+                if(map.containsKey(IPType.GOOD))return;
+                player.kickPlayer(ChatColor.RED+"发生错误,请反馈服务器管理员,错误编号:"+uuid.toString());
+            }
+        }.runTaskAsynchronously(this);
     }
 }

@@ -8,7 +8,7 @@ object load {
     var timer = Timer()
     @JvmStatic
     fun enable() {
-        timer.schedule(ResetCache(), 0, 6 * 60 * 60 * 1000.toLong())
+        timer.schedule(ResetCache(), 0, 6 * 30 * 60 * 1000.toLong())
     }
 
     @JvmStatic

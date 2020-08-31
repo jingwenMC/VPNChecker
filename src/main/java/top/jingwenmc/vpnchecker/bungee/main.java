@@ -3,6 +3,7 @@ package top.jingwenmc.vpnchecker.bungee;
 import cn.dreamlessrealm.dreamlessrealmban.utils.types.Bans;
 import com.google.common.collect.Iterables;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -30,14 +31,21 @@ public class main extends BungeePluginImpl implements Listener {
     @EventHandler
     public void onConn(PostLoginEvent event)
     {
-        Map<IPType, UUID> map = VPNCheck.INSTANCE.checkIp(event.getPlayer().getAddress().getAddress().getHostAddress());
-        UUID uuid = Iterables.getOnlyElement(map.values());
-        if(map.containsKey(IPType.BAD))
-        {
-            Bans.COMPROMISED_ACCOUNT.actionsForever(PlatformManager.INSTANCE.getPlatform().getConSoleSender()
-                    , new String[]{event.getPlayer().getName()});
-        }
-        if(map.containsKey(IPType.GOOD))return;
-        event.getPlayer().disconnect(ChatColor.RED+"发生错误,请反馈服务器管理员,错误编号:"+uuid.toString());
+        ProxiedPlayer player = event.getPlayer();
+        getProxy().getScheduler().runAsync(this, new Runnable() {
+            @Override
+            public void run() {
+                Map<IPType, UUID> map = VPNCheck.INSTANCE.checkIp(player.getAddress().getAddress().getHostAddress());
+                UUID uuid = Iterables.getOnlyElement(map.values());
+                if(map.containsKey(IPType.BAD))
+                {
+                    //Bans.COMPROMISED_ACCOUNT.actionsForever(PlatformManager.INSTANCE.getPlatform().getConSoleSender()
+                    //        , new String[]{player.getName()});
+                    getProxy().getPluginManager().dispatchCommand(getProxy().getConsole(),"ban "+player.getName()+" [Southplex账号安全]不安全的账号");
+                }
+                if(map.containsKey(IPType.GOOD))return;
+                player.disconnect(ChatColor.RED+"发生错误,请反馈服务器管理员,错误编号:"+uuid.toString());
+            }
+        });
     }
 }

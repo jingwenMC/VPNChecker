@@ -42,6 +42,7 @@ public class main extends BungeePluginImpl implements Listener {
                     //Bans.COMPROMISED_ACCOUNT.actionsForever(PlatformManager.INSTANCE.getPlatform().getConSoleSender()
                     //        , new String[]{player.getName()});
                     getProxy().getPluginManager().dispatchCommand(getProxy().getConsole(),"ban "+player.getName()+" [Southplex账号安全]不安全的账号");
+                    return;
                 }
                 if(map.containsKey(IPType.GOOD))return;
                 player.disconnect(ChatColor.RED+"发生错误,请反馈服务器管理员,错误编号:"+uuid.toString());

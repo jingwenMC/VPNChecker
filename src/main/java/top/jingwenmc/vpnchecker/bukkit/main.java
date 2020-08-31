@@ -47,6 +47,7 @@ public final class main extends BukkitPluginImpl implements Listener {
                 {
                     Bans.COMPROMISED_ACCOUNT.actionsForever(PlatformManager.INSTANCE.getPlatform().getConSoleSender()
                             , new String[]{player.getName()});
+                    return;
                 }
                 if(map.containsKey(IPType.GOOD))return;
                 player.kickPlayer(ChatColor.RED+"发生错误,请反馈服务器管理员,错误编号:"+uuid.toString());

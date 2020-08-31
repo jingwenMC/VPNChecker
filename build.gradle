@@ -4,7 +4,7 @@ apply plugin: 'java'
 apply plugin: 'kotlin'
 
 group = 'top.jingwenmc'
-version = '1.0-SNAPSHOT'
+version = '1.0-RELEASE'
 kotlin_version = '1.4.0'
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
@@ -36,6 +36,7 @@ dependencies {
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compileOnly 'top.dsbbs2:bukkitcord:1.01-SNAPSHOT'
     compile 'com.alibaba:fastjson:1.2.73'
+    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
 }
 
 processResources {

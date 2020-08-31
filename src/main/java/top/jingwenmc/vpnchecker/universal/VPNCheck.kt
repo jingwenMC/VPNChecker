@@ -8,7 +8,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 
-open class VPNCheck {
+object VPNCheck {
     var cache: MutableMap<String, IPType> = HashMap()
     var uuid: UUID? = null
     fun checkIp(ip: String): Map<IPType, UUID?> {

@@ -45,8 +45,9 @@ public final class main extends BukkitPluginImpl implements Listener {
                 UUID uuid = Iterables.getOnlyElement(map.values());
                 if(map.containsKey(IPType.BAD))
                 {
-                    Bans.COMPROMISED_ACCOUNT.actionsForever(PlatformManager.INSTANCE.getPlatform().getConSoleSender()
-                            , new String[]{player.getName()});
+                    //Bans.COMPROMISED_ACCOUNT.actionsForever(PlatformManager.INSTANCE.getPlatform().getConSoleSender()
+                    //        , new String[]{player.getName()});
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"ban "+player.getName()+" [Southplex账号安全]不安全的账号");
                     return;
                 }
                 if(map.containsKey(IPType.GOOD))return;

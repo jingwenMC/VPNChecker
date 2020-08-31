@@ -37,6 +37,11 @@ public final class main extends BukkitPluginImpl implements Listener {
     public void onConn(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
+        if(player.hasPermission("vpncheck.bypass"))
+        {
+            System.out.println("[VPNChecker]玩家拥有权限节点,故绕过检测.");
+            return;
+        }
         new BukkitRunnable()
         {
             @Override

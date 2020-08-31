@@ -32,6 +32,11 @@ public class main extends BungeePluginImpl implements Listener {
     public void onConn(PostLoginEvent event)
     {
         ProxiedPlayer player = event.getPlayer();
+        if(player.hasPermission("vpncheck.bypass"))
+        {
+            System.out.println("[VPNChecker]玩家拥有权限节点,故绕过检测.");
+            return;
+        }
         getProxy().getScheduler().runAsync(this, new Runnable() {
             @Override
             public void run() {
